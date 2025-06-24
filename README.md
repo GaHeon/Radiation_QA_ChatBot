@@ -1,4 +1,4 @@
-# Capstone Project
+# Radiation QA ChatBot
 
 ## 1. 프로젝트 설명
 
