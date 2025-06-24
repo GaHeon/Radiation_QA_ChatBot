@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+langchain-community
+langchain-huggingface
+google-cloud-aiplatform
+vertexai
+sentence-transformers
+faiss-cpu
+cachetools
+torch 
