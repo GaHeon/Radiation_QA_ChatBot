@@ -1,4 +1,4 @@
-# Capstone Project
+# Radiation QA ChatBot
 
 ## 1. 프로젝트 설명
 
@@ -9,9 +9,24 @@
 ```
 CapstoneProject/
 |-- embed_chunk/      # 데이터 전처리 및 임베딩 생성
+|   |-- create_embeddings.py
+|   `-- requirements.txt
 |-- evaluate/         # 모델 및 RAG 파이프라인 성능 평가
+|   |-- final_test/
+|   |-- unified_test/
+|   |-- prompt_test/
+|   `-- rag_test/
 |-- fastapi_server/   # FastAPI를 이용한 RAG API 서버
+|   |-- embed_faiss/
+|   |-- cache.json
+|   |-- main.py
+|   |-- nohup.out
+|   |-- requirements.txt
+|   `-- test_client.py
 |-- streamlit/        # Streamlit을 이용한 데모 UI
+|   |-- app.py
+|   |-- Dockerfile
+|   `-- requirements.txt
 |-- .gitignore        # Git 버전 관리 제외 파일 목록
 `-- README.md         # 프로젝트 설명 파일
 ```
