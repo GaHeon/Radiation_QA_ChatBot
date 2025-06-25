@@ -2,79 +2,111 @@
 
 ## 1. 프로젝트 설명
 
-(여기에 프로젝트에 대한 간략한 설명을 작성하세요. 어떤 문제를 해결하는지, 주요 기능은 무엇인지 등)
+**Radiation QA ChatBot**은 방사선 품질관리(QA) 문서에 기반하여 사용자의 질문에 정확하고 신뢰성 있는 답변을 제공하는 **RAG 기반 챗봇 시스템**입니다.  
+HyDE 기반 임베딩 방식과 캐싱을 적용해 **빠르고 일관된 응답**을 제공하며, GCP의 Vertex AI를 활용해 실제 의료 QA 환경에서 사용할 수 있는 실용성을 목표로 합니다.
+
+- ✅ **문서 기반 QA**: 업로드된 문서를 벡터화하여 의미 기반 검색
+- 🔍 **RAG 방식 + HyDE 적용**: 질문의 의미를 확장 후 벡터 검색 → Gemini 모델로 응답 생성
+- 🚀 **응답 속도 개선**: LRU 메모리 캐시 + 파일 캐시로 자주 묻는 질문에 빠르게 응답
+- 🌐 **Streamlit UI 제공**: 사용자 친화적인 웹 기반 인터페이스
+
+---
 
 ## 2. 프로젝트 구조
 
 ```
 CapstoneProject/
-|-- embed_chunk/      # 데이터 전처리 및 임베딩 생성
-|   |-- create_embeddings.py
-|   `-- requirements.txt
-|-- evaluate/         # 모델 및 RAG 파이프라인 성능 평가
-|   |-- final_test/
-|   |-- unified_test/
-|   |-- prompt_test/
-|   `-- rag_test/
-|-- fastapi_server/   # FastAPI를 이용한 RAG API 서버
-|   |-- embed_faiss/
-|   |-- cache.json
-|   |-- main.py
-|   |-- nohup.out
-|   |-- requirements.txt
-|   `-- test_client.py
-|-- streamlit/        # Streamlit을 이용한 데모 UI
-|   |-- app.py
-|   |-- Dockerfile
-|   `-- requirements.txt
-|-- .gitignore        # Git 버전 관리 제외 파일 목록
-`-- README.md         # 프로젝트 설명 파일
+├── embed_chunk/        # 문서 임베딩 생성
+│   ├── create_embeddings.py
+│   └── requirements.txt
+├── evaluate/           # 챗봇 성능 평가
+│   ├── final_test/
+│   ├── unified_test/
+│   ├── prompt_test/
+│   └── rag_test/
+├── fastapi_server/     # FastAPI 서버: 벡터 검색 및 Gemini 응답
+│   ├── embed_faiss/    # 생성된 FAISS 인덱스 저장
+│   ├── cache.json      # 캐시 파일
+│   ├── main.py         # FastAPI 메인 서버 코드
+│   ├── nohup.out
+│   └── requirements.txt
+├── streamlit/          # Streamlit 데모 인터페이스
+│   ├── app.py
+│   ├── Dockerfile
+│   └── requirements.txt
+└── README.md
 ```
+
+---
 
 ## 3. 설치 방법
 
-(프로젝트를 로컬 환경에서 실행하기 위해 필요한 절차를 작성하세요. 예를 들어:)
+1. **레포지토리 클론**
+```bash
+git clone https://github.com/your-org/Radiation-QA-ChatBot.git
+cd CapstoneProject
+```
 
-1.  **Repository 클론**
-    ```bash
-    git clone (레포지토리 주소)
-    cd CapstoneProject
-    ```
+2. **가상환경 생성 및 활성화**
+```bash
+python -m venv venv
+source venv/bin/activate  # macOS/Linux
+# venv\Scripts\activate   # Windows
+```
 
-2.  **가상환경 생성 및 활성화**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # macOS/Linux
-    # venv\Scripts\activate   # Windows
-    ```
+3. **라이브러리 설치**
+```bash
+pip install -r embed_chunk/requirements.txt
+pip install -r fastapi_server/requirements.txt
+pip install -r streamlit/requirements.txt
+```
 
-3.  **필요한 라이브러리 설치**
-    (각 디렉터리별로 requirements.txt가 있으므로, 설치 방법을 안내합니다.)
-    ```bash
-    pip install -r fastapi_server/requirements.txt
-    pip install -r streamlit/requirements.txt
-    pip install -r embed_chunk/requirements.txt
-    ```
-4. **(필요시) 데이터 및 모델 준비**
-   (FAISS 인덱스 생성 방법이나, 다운로드 받아야 할 모델이 있다면 여기에 명시합니다.)
+4. **FAISS 벡터 DB 생성**
+```bash
+cd embed_chunk
+python create_embeddings.py
+```
 
+> HyDE를 활용한 질문 임베딩이 자동 생성됨  
+> 결과 파일은 `fastapi_server/embed_faiss/`에 저장됨
+
+---
 
 ## 4. 사용 방법
 
-(프로젝트 실행 방법을 안내합니다.)
+1. **FastAPI 서버 실행**
+```bash
+cd fastapi_server
+uvicorn main:app --reload
+```
 
-1.  **FastAPI 서버 실행**
-    ```bash
-    cd fastapi_server
-    uvicorn main:app --reload
-    ```
+2. **Streamlit 앱 실행**
+```bash
+cd streamlit
+streamlit run app.py
+```
 
-2.  **Streamlit 앱 실행**
-    ```bash
-    cd streamlit
-    streamlit run app.py
-    ```
+3. **브라우저 접속**
+```
+http://localhost:8501
+```
 
-## 5. 추가 정보
+---
 
-(알려야 할 추가적인 정보가 있다면 여기에 작성합니다.) 
+## 5. 기술 스택 및 특징
+
+| 구성 요소 | 설명 |
+|-----------|------|
+| **HyDE 임베딩** | 질문 자체를 임베딩할 뿐 아니라, 질문에서 가상의 답변을 생성 → 이 답변을 임베딩하여 유사 문서 검색 정확도 향상 |
+| **FAISS** | HuggingFace 임베딩을 기반으로 벡터 DB 구성 |
+| **Vertex AI Gemini** | 응답 생성에 사용되는 LLM (GenerativeModel 사용) |
+| **캐싱 구조** | LRUCache (in-memory) + JSON 파일 캐시 (persistent) 이중 구조로 응답 속도 최적화 |
+| **Cloud Run / GCE** | Docker 기반 Streamlit 앱을 GCP에서 배포 가능 |
+
+---
+
+## 6. 향후 개선 사항 (Next Step)
+
+- 📦 PDF 업로드 기능 추가 → 실시간 문서 QA 가능
+- 📊 응답 시간 로깅 및 시각화 → 속도 튜닝 및 품질 평가 자동화
+- 🧠 도메인 별 프롬프트 튜닝 → 물리학 QA, 간호 QA 등
