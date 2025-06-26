@@ -110,7 +110,66 @@ http://localhost:8501
 | **캐싱 구조** | LRUCache (in-memory) + JSON 파일 캐시 (persistent) 이중 구조로 응답 속도 최적화 |
 | **Cloud Run / GCE** | Docker 기반 Streamlit 앱을 GCP에서 배포 가능 |
 
-## 6. 챗봇 응답 평가 기능
+## 6. 문제 해결 전략
+
+### LLM 응답 비용 증가
+
+- **문제**: HyDE 방식은 질문마다 LLM 호출이 필요해 호출량 누적 시 비용 부담
+- **해결책**: HyDE 응답 캐싱을 통해 동일 질문에 대해 응답을 재사용하여 LLM 호출 최소화
+  - SHA256 해시 기반 파일 캐시 시스템 구축 (`hypo_cache.json`) → 메모리 감소
+
+- **관련 코드**:
+  - 메모리 캐시 설정:
+    ```python
+    cache = LRUCache(maxsize=200) # 메모리 캐시 (핫 캐시)
+    ```
+  - 캐시 저장 함수:
+    ```python
+    def save_cache_to_disk():
+        # 캐시를 디스크에 저장하는 함수
+        with open(CACHE_FILE, 'w', encoding='utf-8') as f:
+            json.dump(dict(cache.items()), f, ensure_ascii=False, indent=4)
+    ```
+  - 캐시 로드 함수:
+    ```python
+    def load_cache_from_disk():
+        # 디스크에서 캐시를 로드하는 함수
+        if os.path.exists(CACHE_FILE):
+            with open(CACHE_FILE, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                cache.update(data)
+    ```
+
+**기대 효과**
+
+- 최초 1회 생성 후 캐시 재활용 → HyDE 생성 비용 0원
+- 전체 실행 비용 30~50% 절감
+- 평균 응답 시간 30~40% 감소
+
+### 다국어 문서 대응 문제
+
+- **문제**: 한국 질문, 영어 문서 → 벡터 검색 실패율 증가
+- **해결책**: HyDE 문장 자동 번역 적용
+  - HyDE 생성 후 문장을 자동으로 영어로 번역
+  - 벡터 검색은 한/영 임베딩 기준으로 통일
+
+- **관련 코드**:
+  - 번역 함수:
+    ```python
+    async def translate_to_english(text: str, helper_model: GenerativeModel):
+        # 번역 함수
+        prompt = f"다음 한국어 텍스트를 자연스러운 영어로 번역해주세요.\n\n한국어: {text}\n\nEnglish:"
+        response = await helper_model.generate_content_async(prompt)
+        return response.text.strip()
+    ```
+
+**기대 효과**
+
+- 한국어 질문이더라도 영어 문서 검색 가능
+- 검색 정확도 향상 → 관련성·충실도 점수 상승
+- 전체 응답 품질의 일관성 확보
+
+## 7. 챗봇 응답 평가 기능
 
 ### 📏 평가 항목 (LLM-as-a-Judge 방식)
 
@@ -133,7 +192,7 @@ http://localhost:8501
 | **응답 시간** | 평균 수 초 이상 | **30~40% 감소** |
 | **LLM 호출 비용** | 문항마다 발생 | **최초 1회 → 캐시 재사용** |
 
-## 7. 유지관리 및 확장 가이드
+## 8. 유지관리 및 확장 가이드
 
 ### 참고 문서 업데이트
 
@@ -178,7 +237,7 @@ http://localhost:8501
 - 사용자 행동 기반 **프롬프트 자동 튜닝**
 - 장기적으로 **모델 미세 조정 및 사용자 맞춤형 챗봇 구현 가능성 확보**
 
-### PDF 업로드 기반 실시간 문서 QA 기능
+### 🔷 PDF 업로드 기반 실시간 문서 QA 기능
 
 사용자가 자체 보유한 QA 문서를 업로드하면, 해당 문서를 임베딩하여 **즉시 질의응답이 가능한 개인화된 RAG 챗봇 환경**을 구성할 수 있습니다.
 
@@ -199,7 +258,7 @@ http://localhost:8501
 
 ---
 
-## 8. 배포 인프라 구성
+## 9. 배포 인프라 구성
 
 ![Chatbot Deploy](presentation/image/deploy.png)
 
