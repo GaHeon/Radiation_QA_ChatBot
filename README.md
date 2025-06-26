@@ -1,8 +1,6 @@
 # Radiation QA ChatBot
 
-## 참고 링크
-
-- [사용/기능 설명서 노션 링크](https://www.notion.so/Radiation-QA-System-21a7f9017bbe80059da7f1b8801ee37e?source=copy_link)
+- [사용/기능 설명서](https://www.notion.so/Radiation-QA-System-21a7f9017bbe80059da7f1b8801ee37e?source=copy_link)
 
 ## 1. 프로젝트 설명
 
