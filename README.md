@@ -173,7 +173,7 @@ http://localhost:8501
 
 ## 7. 챗봇 응답 평가 기능
 
-### 📏 평가 항목 (LLM-as-a-Judge 방식)
+### 평가 항목 (LLM-as-a-Judge 방식)
 
 | 항목 | 설명 |
 | --- | --- |
@@ -252,7 +252,7 @@ http://localhost:8501
 | **질의응답 흐름** | 사용자의 질문 → 업로드한 문서에서 검색 후 응답 생성 |
 | **사용 기술** | `PyMuPDF`, `LangChain`, `FAISS`, `Streamlit FileUploader` 등 |
 
-**기대 효과 (PDF QA 기능)**
+### 기대 효과 (PDF 업로드 기능)
 
 - 병원·기관별 **다양한 QA 문서에 맞춘 유연한 대응 가능**
 - **내부 보안 문서 기반 QA 환경** 구성
