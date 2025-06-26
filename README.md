@@ -5,7 +5,7 @@
 **Radiation QA ChatBot**은 방사선 품질관리(QA) 문서에 기반하여 사용자의 질문에 정확하고 신뢰성 있는 답변을 제공하는 **RAG 기반 챗봇 시스템**입니다.  
 HyDE 기반 임베딩 방식과 캐싱을 적용해 **빠르고 일관된 응답**을 제공하며, GCP의 Vertex AI를 활용해 실제 의료 QA 환경에서 사용할 수 있는 실용성을 목표로 합니다.
 
-![Chatbot Prototype](prenstation/gif/prototype.gif)
+![Chatbot Prototype](presentation/gif/prototype.gif)
 
 - ✅ **문서 기반 QA**: 업로드된 문서를 벡터화하여 의미 기반 검색
 - 🔍 **RAG 방식 + HyDE 적용**: 질문의 의미를 확장 후 벡터 검색 → Gemini 모델로 응답 생성
@@ -17,7 +17,7 @@ HyDE 기반 임베딩 방식과 캐싱을 적용해 **빠르고 일관된 응답
 ## 2. 프로젝트 구조
 
 **SystemArchitecture**
-![Chatbot Architecture](prenstation/image/system_architecture.png)
+![Chatbot Architecture](presentation/image/system_architecture.png)
 
 ```
 CapstoneProject/
@@ -120,7 +120,7 @@ http://localhost:8501
 
 ## 7. 배포 인프라 구성
 
-![Chatbot Deploy](prenstation/image/deploy.png)
+![Chatbot Deploy](presentation/image/deploy.png)
 
 - **GCE VM**: 백엔드 (Fastapi 사용)
 - **Cloud Run**: 최종 챗봇 배포 환경 (Streamlit, 무중단, 자동 확장)
