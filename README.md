@@ -1,5 +1,9 @@
 # Radiation QA ChatBot
 
+## 참고 링크
+
+- [사용/기능 설명서 노션 링크](https://www.notion.so/Radiation-QA-System-21a7f9017bbe80059da7f1b8801ee37e?source=copy_link)
+
 ## 1. 프로젝트 설명
 
 **Radiation QA ChatBot**은 방사선 품질관리(QA) 문서에 기반하여 사용자의 질문에 정확하고 신뢰성 있는 답변을 제공하는 **RAG 기반 챗봇 시스템**입니다.  
@@ -266,3 +270,4 @@ http://localhost:8501
 - **Cloud Run**: 최종 챗봇 배포 환경 (Streamlit, 무중단, 자동 확장)
 - **Cloud Build**: 이미지 자동 빌드 및 저장
 - **Artifact Registry**: 챗봇 이미지 저장소
+
