@@ -269,3 +269,9 @@ http://localhost:8501
 - **Cloud Build**: 이미지 자동 빌드 및 저장
 - **Artifact Registry**: 챗봇 이미지 저장소
 
+## 10 . 참고 문서
+- [Vertex AI Gemini 개요 (공식 문서)](https://cloud.google.com/vertex-ai?utm_source=chatgpt.com)
+- [HyDE: Hypothetical Document Embeddings 논문 (arXiv)](https://arxiv.org/abs/2212.10496)
+- [LangChain HyDE + FAISS 예제 코드](https://js.langchain.com/docs/integrations/retrievers/hyde?utm_source=chatgpt.com)
+- [Cloud Run + Artifact Registry 배포 가이드](https://cloud.google.com/run/docs/deploying?utm_source=chatgpt.com)
+- [cachetools 공식 문서 (Python 캐싱 라이브러리)](https://cachetools.readthedocs.io/en/latest/)
